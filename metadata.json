@@ -1,0 +1,7 @@
+{
+  "name": "SCAM SHIELD: Real-Time Voice Deepfake Detection",
+  "description": "A progressive web app that protects users from phone scams using AI-powered deepfake detection. It provides real-time call analysis, detects AI-generated voices, and offers instant alerts.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
