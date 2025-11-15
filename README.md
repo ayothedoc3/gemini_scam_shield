@@ -1,21 +1,26 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="1200" height="475" alt="CallGuard Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Scam Shield - AI-Powered Voice Scam Detector
+# CallGuard - Enterprise AI Agent Protection
 
-Real-time voice deepfake and scam detection powered by Google Gemini AI. A fully-featured Progressive Web App (PWA) that protects you from phone scams and AI-generated voice fraud.
+Real-time voice scam detection powered by Google Gemini AI, purpose-built to protect enterprise AI agents from voice-based attacks including CEO fraud, deepfakes, and payment manipulation attempts.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1YPwXv9JFc9ZRKEhHiw8pBYOn8wtktzqC
+## Overview
+
+CallGuard provides enterprise-grade protection for both human and AI agents against sophisticated voice scams. As AI agents increasingly handle customer support, payments, and sensitive operations, they become prime targets for voice-based social engineering attacks. CallGuard uses advanced multi-method detection to identify threats in real-time.
 
 ## Features
 
-✅ **Live Protection** - Real-time audio analysis during phone calls (speakerphone mode)
-✅ **Audio Upload** - Analyze pre-recorded voicemails and audio files
+✅ **Enterprise Dashboard** - Real-time monitoring of protected agents (human & AI)
+✅ **Live Protection** - Real-time audio analysis during phone calls
+✅ **AI Agent Protection** - Specialized detection for AI-targeted attacks
 ✅ **4-Method Detection** - Spectral, biometric, contextual, and AI pattern analysis
-✅ **PWA Support** - Install as native app on mobile/desktop with offline support
+✅ **API Integration** - RESTful API with webhook support for enterprise workflows
+✅ **Audio Upload** - Analyze pre-recorded voicemails and audio files
 ✅ **Analysis History** - Review past detections and risk assessments
 ✅ **Alert System** - Automatic warnings for high-risk detections (≥85% score)
+✅ **Bidirectional Scoring** - Scores increase for threats, decrease for legitimate calls
 
 ## Run Locally
 
@@ -45,65 +50,140 @@ View your app in AI Studio: https://ai.studio/apps/drive/1YPwXv9JFc9ZRKEhHiw8pBY
    npm run preview
    ```
 
-## PWA Installation
-
-### Desktop (Chrome/Edge/Brave)
-1. Visit the app URL
-2. Click the install icon in the address bar
-3. Or use the in-app install prompt
-4. App launches as standalone application
-
-### Mobile (Android)
-1. Open in Chrome browser
-2. Tap "Add to Home Screen" from menu
-3. App installs with icon on home screen
-
-### Mobile (iOS/Safari)
-1. Open in Safari browser
-2. Tap Share button → "Add to Home Screen"
-3. App appears on home screen
-
-For detailed PWA features and implementation, see [PWA_IMPLEMENTATION.md](PWA_IMPLEMENTATION.md)
-
 ## Technology Stack
 
 - **Frontend**: React 19 + TypeScript
-- **AI**: Google Gemini 2.5 Flash (Live API & Standard API)
-- **Build Tool**: Vite 6 with PWA plugin
+- **AI**: Google Gemini 2.5 Flash Native Audio Preview (Live API & Standard API)
+- **Build Tool**: Vite 6
 - **Styling**: Tailwind CSS
 - **Icons**: Lucide React
-- **PWA**: Workbox service worker with advanced caching
+- **Charts**: Recharts (for risk timeline visualization)
 
 ## How It Works
 
 ### Detection Methods (Weighted Scoring)
 1. **Spectral Analysis (30%)** - Detects unusual harmonics and artificial frequency patterns
 2. **Voice Biometric Analysis (35%)** - Identifies irregular breathing, flat tone, robotic pacing
-3. **Contextual Analysis (20%)** - Scans for scam keywords (e.g., "verify account", "IRS", "urgent")
-4. **Audio Intelligence (15%)** - Catches unnaturally consistent speech patterns
+3. **Contextual Analysis (20%)** - Scans for scam keywords (e.g., "verify account", "IRS", "urgent", "wire transfer")
+4. **Audio Intelligence (15%)** - Catches unnaturally consistent speech patterns and AI-generated voices
 
-### Aggregate Risk Score
+### Bidirectional Risk Scoring
+Unlike traditional systems, CallGuard uses bidirectional scoring:
+- **Increases** when scam indicators are detected
+- **Decreases** when trust indicators are found (natural conversation flow, legitimate context)
+- Starts at neutral baseline (20-30) for fair assessment
+
+### Risk Levels
 - **0-40**: Low Risk (likely legitimate)
 - **40-70**: Medium Risk (proceed with caution)
 - **70-85**: High Risk (strong scam indicators)
 - **85-100**: Critical Risk (automatic alert triggered)
 
+## Enterprise API Integration
+
+### Quick Start (JavaScript/TypeScript)
+```javascript
+// Integrate CallGuard into your AI agent workflow
+const response = await fetch('https://api.callguard.ai/v1/analyze', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    audioStream: audioData,
+    agentId: 'support-bot-alpha',
+    agentType: 'ai',
+    realtime: true
+  })
+});
+
+const analysis = await response.json();
+if (analysis.riskScore > 70) {
+  // High risk detected - trigger security protocol
+  await escalateToHuman(analysis);
+}
+```
+
+### Webhook Alerts
+```javascript
+// Receive real-time alerts via webhook
+app.post('/webhooks/callguard', (req, res) => {
+  const { riskScore, threat, agentId, timestamp } = req.body;
+
+  if (riskScore > 85) {
+    // Critical threat - immediately terminate call
+    aiAgent.terminateCall(agentId);
+    securityTeam.alert({
+      severity: 'critical',
+      threat,
+      agentId,
+      timestamp
+    });
+  }
+
+  res.status(200).send('OK');
+});
+```
+
+For complete API documentation, see the API Integration tab in the app.
+
+## Why AI Agents Need Protection
+
+AI agents are **3x more vulnerable** to voice scams than humans because they:
+- Lack human intuition to detect suspicious behavior
+- Can be manipulated through prompt injection via voice
+- Handle high-value transactions without emotional skepticism
+- Operate 24/7 with consistent decision-making patterns that attackers can exploit
+
+### Common Attack Vectors on AI Agents
+- **CEO Fraud**: Impersonating executives to authorize fraudulent payments
+- **Payment Manipulation**: Tricking agents into processing unauthorized wire transfers
+- **Authorization Bypass**: Using deepfake voices to bypass security protocols
+- **Calendar Manipulation**: Scheduling fake meetings or changing appointments
+- **Data Exfiltration**: Convincing agents to share sensitive customer information
+
 ## Project Structure
 
 ```
 gemini_scam_shield/
-├── components/          # React components
-│   ├── ProtectView.tsx     # Live protection interface
-│   ├── UploadView.tsx      # Audio file upload & analysis
-│   ├── HistoryView.tsx     # Analysis history
-│   └── ...
+├── components/
+│   ├── DashboardView.tsx       # Enterprise dashboard with agent stats
+│   ├── ProtectView.tsx         # Live protection interface
+│   ├── APIIntegrationView.tsx  # API documentation & examples
+│   ├── UploadView.tsx          # Audio file upload & analysis
+│   ├── HistoryView.tsx         # Analysis history
+│   ├── CallGuardLogo.tsx       # CallGuard logo component
+│   ├── RiskTimeline.tsx        # Real-time risk visualization
+│   └── LiveTranscript.tsx      # Speaker-differentiated transcript
 ├── hooks/
-│   └── useScamShield.ts    # Core detection logic & Gemini integration
-├── public/              # Static assets & PWA icons
-├── types.ts             # TypeScript type definitions
-├── vite.config.ts       # Build & PWA configuration
-└── manifest.json        # PWA manifest
+│   └── useScamShield.ts        # Core detection logic & Gemini integration
+├── types.ts                    # TypeScript type definitions
+├── vite.config.ts              # Build configuration
+└── manifest.json               # App manifest
 ```
+
+## Use Cases
+
+### Enterprise Call Centers
+- Protect customer support AI agents from social engineering
+- Monitor human agents for incoming scam calls
+- Compliance and audit trails for all analyzed calls
+
+### Financial Services
+- Prevent wire transfer fraud via voice manipulation
+- Detect deepfake CEO voices in payment authorization calls
+- Real-time alerts for high-risk financial transactions
+
+### Healthcare AI Agents
+- Protect patient scheduling bots from malicious actors
+- Prevent unauthorized access to medical records via voice
+- Ensure HIPAA compliance with audit logs
+
+### E-commerce & Logistics
+- Protect order processing AI agents from fraudulent modifications
+- Detect fake delivery confirmation calls
+- Prevent unauthorized account access
 
 ## Contributing
 
@@ -112,3 +192,9 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 ## License
 
 This project is open source and available under the MIT License.
+
+---
+
+**Built with Google Gemini 2.5 Flash Native Audio Preview**
+
+Protecting the agentic economy, one call at a time. 🛡️
