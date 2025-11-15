@@ -137,18 +137,35 @@ const useScamShield = () => {
     try {
         // Check if getUserMedia is supported
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            setError('Your browser does not support microphone access. Please use Chrome, Safari, or Edge.');
+            setError('Your browser does not support audio capture. Please use Chrome, Safari, or Edge.');
             setIsStarting(false);
             return;
         }
 
-        mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
-            audio: {
-                echoCancellation: true,
-                noiseSuppression: true,
-                autoGainControl: true
-            }
-        });
+        // Try to capture system audio first (for testing with audio files)
+        // This will prompt user to share their screen/tab with audio
+        try {
+            mediaStreamRef.current = await navigator.mediaDevices.getDisplayMedia({
+                video: false,
+                audio: {
+                    echoCancellation: false,
+                    noiseSuppression: false,
+                    autoGainControl: false,
+                    // @ts-ignore - Chrome-specific property
+                    suppressLocalAudioPlayback: false
+                }
+            });
+        } catch (displayErr) {
+            // If screen sharing is cancelled or not supported, fall back to microphone
+            console.log('Screen audio capture not available, using microphone instead');
+            mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true
+                }
+            });
+        }
     } catch (err: any) {
         console.error('Failed to get microphone access:', err);
 
