@@ -139,72 +139,6 @@ def analyze_call(audio_stream, agent_id):
         </div>
       </div>
 
-      {/* Quick Start */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Code className="w-5 h-5 text-indigo-400" />
-          <h2 className="text-xl font-bold text-white">Quick Start - JavaScript/TypeScript</h2>
-        </div>
-        <CodeBlock code={webhookExample} language="TypeScript" section="webhook" />
-      </div>
-
-      {/* Webhook Callbacks */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Webhook className="w-5 h-5 text-purple-400" />
-          <h2 className="text-xl font-bold text-white">Receive Webhook Alerts</h2>
-        </div>
-        <p className="text-sm text-gray-400 mb-4">
-          Configure your endpoint to receive real-time threat notifications
-        </p>
-        <CodeBlock code={webhookCallbackExample} language="JavaScript" section="callback" />
-      </div>
-
-      {/* Python Example */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Code className="w-5 h-5 text-green-400" />
-          <h2 className="text-xl font-bold text-white">Python Integration</h2>
-        </div>
-        <CodeBlock code={pythonExample} language="Python" section="python" />
-      </div>
-
-      {/* API Response Format */}
-      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-        <h2 className="text-xl font-bold text-white mb-4">API Response Format</h2>
-        <div className="bg-gray-900/80 border border-gray-700 rounded-lg p-4">
-          <pre className="text-sm text-gray-300 overflow-x-auto">
-{`{
-  "riskScore": 87,
-  "threat": "CEO Fraud Attempt",
-  "confidence": 0.94,
-  "agentId": "support-bot-alpha",
-  "timestamp": "2024-01-15T10:30:45Z",
-  "analysis": {
-    "spectral": {
-      "score": 82,
-      "details": "Frequency anomalies detected"
-    },
-    "biometric": {
-      "score": 91,
-      "details": "Synthetic voice patterns identified"
-    },
-    "contextual": {
-      "score": 85,
-      "details": "High-risk keywords: urgent, wire transfer, CEO"
-    },
-    "intelligence": {
-      "score": 90,
-      "details": "AI-generated speech patterns detected"
-    }
-  },
-  "transcript": "This is the CEO. I need you to process an urgent wire transfer...",
-  "recommendation": "TERMINATE_CALL"
-}`}
-          </pre>
-        </div>
-      </div>
-
       {/* One-Click VoIP/CRM Integrations */}
       <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
         <div className="flex items-center gap-2 mb-4">
@@ -331,6 +265,72 @@ def analyze_call(audio_stream, agent_id):
           <p className="text-sm text-indigo-200">
             <strong>Enterprise Integration Support:</strong> Need a custom integration for your platform? Our team can build custom connectors for your specific infrastructure. Contact sales for details.
           </p>
+        </div>
+      </div>
+
+      {/* Quick Start */}
+      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Code className="w-5 h-5 text-indigo-400" />
+          <h2 className="text-xl font-bold text-white">Quick Start - JavaScript/TypeScript</h2>
+        </div>
+        <CodeBlock code={webhookExample} language="TypeScript" section="webhook" />
+      </div>
+
+      {/* Webhook Callbacks */}
+      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Webhook className="w-5 h-5 text-purple-400" />
+          <h2 className="text-xl font-bold text-white">Receive Webhook Alerts</h2>
+        </div>
+        <p className="text-sm text-gray-400 mb-4">
+          Configure your endpoint to receive real-time threat notifications
+        </p>
+        <CodeBlock code={webhookCallbackExample} language="JavaScript" section="callback" />
+      </div>
+
+      {/* Python Example */}
+      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Code className="w-5 h-5 text-green-400" />
+          <h2 className="text-xl font-bold text-white">Python Integration</h2>
+        </div>
+        <CodeBlock code={pythonExample} language="Python" section="python" />
+      </div>
+
+      {/* API Response Format */}
+      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+        <h2 className="text-xl font-bold text-white mb-4">API Response Format</h2>
+        <div className="bg-gray-900/80 border border-gray-700 rounded-lg p-4">
+          <pre className="text-sm text-gray-300 overflow-x-auto">
+{`{
+  "riskScore": 87,
+  "threat": "CEO Fraud Attempt",
+  "confidence": 0.94,
+  "agentId": "support-bot-alpha",
+  "timestamp": "2024-01-15T10:30:45Z",
+  "analysis": {
+    "spectral": {
+      "score": 82,
+      "details": "Frequency anomalies detected"
+    },
+    "biometric": {
+      "score": 91,
+      "details": "Synthetic voice patterns identified"
+    },
+    "contextual": {
+      "score": 85,
+      "details": "High-risk keywords: urgent, wire transfer, CEO"
+    },
+    "intelligence": {
+      "score": 90,
+      "details": "AI-generated speech patterns detected"
+    }
+  },
+  "transcript": "This is the CEO. I need you to process an urgent wire transfer...",
+  "recommendation": "TERMINATE_CALL"
+}`}
+          </pre>
         </div>
       </div>
 
