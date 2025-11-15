@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Shield, Upload, History, LayoutDashboard, Code, Presentation } from 'lucide-react';
+import { Shield, Upload, History, LayoutDashboard, Code } from 'lucide-react';
 import ProtectView from './components/ProtectView';
 import UploadView from './components/UploadView';
 import HistoryView from './components/HistoryView';
@@ -60,23 +60,12 @@ const App: React.FC = () => {
               <p className="text-xs text-gray-400 hidden sm:block">Enterprise AI Agent Protection</p>
             </div>
           </div>
-            <div className="flex items-center gap-3">
-              <a
-                href="/pitch-deck.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white rounded-lg transition-all transform hover:scale-105 text-sm font-medium shadow-lg"
-              >
-                <Presentation className="w-4 h-4" />
-                Pitch Deck
-              </a>
-              <div className="flex items-center gap-2 p-2 rounded-full bg-green-500/20 text-green-300 text-xs">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                  </span>
-                  <span className="hidden sm:inline">SYSTEMS OPERATIONAL</span>
-              </div>
+            <div className="flex items-center gap-2 p-2 rounded-full bg-green-500/20 text-green-300 text-xs">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span className="hidden sm:inline">SYSTEMS OPERATIONAL</span>
             </div>
         </div>
       </header>
