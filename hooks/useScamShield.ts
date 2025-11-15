@@ -8,7 +8,7 @@ import {
     FunctionDeclaration,
     Type,
 } from '@google/genai';
-import type { TranscriptEntry, DetailedAnalysis, HistoryEntry } from '../types';
+import type { TranscriptEntry, DetailedAnalysis, HistoryEntry, TimelineDataPoint } from '../types';
 
 // Audio helper functions from Gemini docs
 function encode(bytes: Uint8Array) {
@@ -68,6 +68,7 @@ const useScamShield = () => {
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [timelineData, setTimelineData] = useState<TimelineDataPoint[]>([]);
 
   // FIX: LiveSession is not an exported type from @google/genai. Use `any` for the session promise.
   const sessionPromiseRef = useRef<Promise<any> | null>(null);
@@ -77,6 +78,8 @@ const useScamShield = () => {
   const sourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
   
   const analysisRef = useRef(analysis);
+  const sessionStartTimeRef = useRef<number>(0);
+
   useEffect(() => {
     analysisRef.current = analysis;
   }, [analysis]);
@@ -117,13 +120,10 @@ const useScamShield = () => {
     sourceNodeRef.current = null;
     audioContextRef.current?.close().catch(console.error);
     audioContextRef.current = null;
-    
-    setTimeout(() => {
-        setAnalysis(initialAnalysisState);
-        setTranscript([]);
-        if (!showAlert) setShowAlert(false);
-    }, 500);
-  }, [showAlert]);
+
+    // Don't reset analysis and transcript - let them persist so user can review results
+    // They will only be cleared when starting a new detection session
+  }, []);
 
   const startDetection = useCallback(async () => {
     setIsStarting(true);
@@ -131,12 +131,40 @@ const useScamShield = () => {
     setTranscript([]);
     setAnalysis(initialAnalysisState);
     setShowAlert(false);
+    setTimelineData([]);
+    sessionStartTimeRef.current = Date.now();
 
     try {
-        mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (err) {
+        // Check if getUserMedia is supported
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            setError('Your browser does not support microphone access. Please use Chrome, Safari, or Edge.');
+            setIsStarting(false);
+            return;
+        }
+
+        mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true
+            }
+        });
+    } catch (err: any) {
         console.error('Failed to get microphone access:', err);
-        setError('Could not access the microphone. Please grant permission and try again.');
+
+        // Provide specific error messages
+        let errorMessage = 'Could not access the microphone. ';
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            errorMessage += 'Please allow microphone access in your browser settings and try again.';
+        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+            errorMessage += 'No microphone found on your device.';
+        } else if (err.name === 'NotReadableError') {
+            errorMessage += 'Microphone is already in use by another application.';
+        } else {
+            errorMessage += 'Please grant permission and try again. Error: ' + err.message;
+        }
+
+        setError(errorMessage);
         setIsStarting(false);
         return;
     }
@@ -144,14 +172,39 @@ const useScamShield = () => {
     try {
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         
-        const systemInstruction = `You are an AI assistant specialized in detecting voice scams and AI-generated speech (deepfakes) in real-time. Your goal is to protect the user by analyzing the audio based on 4 distinct methods and reporting your findings every 10-15 seconds via the 'report_analysis' function.
+        const systemInstruction = `You are an AI assistant specialized in detecting voice scams and AI-generated speech (deepfakes) in real-time. Your goal is to protect the user by analyzing the audio based on 4 distinct methods and reporting your findings FREQUENTLY (every 5-10 seconds of audio) via the 'report_analysis' function.
+
+CRITICAL: Call the 'report_analysis' function IMMEDIATELY when you detect audio, and then continue calling it regularly every 5-10 seconds with updated analysis. Do NOT wait for long periods without reporting.
+
+IMPORTANT: Scores should be BIDIRECTIONAL - they can go UP or DOWN based on the conversation. As trust is established or suspicion decreases, LOWER the scores accordingly. Give accurate, dynamic assessments.
+
+SPEAKER IDENTIFICATION: When transcribing, try to identify different speakers in the conversation. If you detect a change in voice characteristics (different pitch, tone, speaking style), mark it as a different speaker. Label speakers as "Caller" and "Recipient" or "Speaker 1" and "Speaker 2" to help the user understand who is speaking.
 
 1.  **Spectral Analysis (30% weight)**: Analyze the frequency spectrum for unusual harmonics, abrupt changes, or artificial patterns.
-2.  **Voice Biometric Analysis (35% weight)**: Detect irregular breathing, robotic or flat emotional tone, unnatural pacing, and pronunciation glitches.
-3.  **Contextual Analysis (20% weight)**: Scan the live transcript for scam keywords. High-risk: "verify account", "suspended", "social security", "IRS", "prize won". Medium-risk: "urgent", "act now", "confirm payment", "account locked".
-4.  **Audio Intelligence (15% weight)**: Identify artificial speech patterns like repetitive qualities, inconsistent or overly smooth pacing.
+    - INCREASE score: Unnatural harmonics, artificial frequency patterns, synthetic audio signatures
+    - DECREASE score: Natural frequency variations, consistent human vocal characteristics, authentic breath resonance
 
-Continuously evaluate and call the function with updated scores and reasons for all four methods.`;
+2.  **Voice Biometric Analysis (35% weight)**: Detect irregular breathing, robotic or flat emotional tone, unnatural pacing, and pronunciation glitches.
+    - INCREASE score: Missing breaths, flat affect, robotic pacing, unnatural consistency, pronunciation errors
+    - DECREASE score: Natural breathing patterns, genuine emotional variation, authentic human speech rhythms, natural imperfections
+
+3.  **Contextual Analysis (20% weight)**: Scan the live transcript for scam keywords AND trust indicators.
+    - INCREASE score: High-risk keywords ("verify account", "suspended", "social security", "IRS", "prize won", "wire money", "gift cards"). Medium-risk ("urgent", "act now", "confirm payment", "account locked").
+    - DECREASE score: Normal conversation topics, legitimate business discussion, personal familiarity cues, verifiable information sharing, natural conversational flow
+
+4.  **Audio Intelligence (15% weight)**: Identify artificial speech patterns like repetitive qualities, inconsistent or overly smooth pacing.
+    - INCREASE score: Unnaturally consistent pacing, repetitive patterns, overly smooth delivery, scripted monotone
+    - DECREASE score: Natural conversational dynamics, authentic pauses and filler words, genuine thinking moments, spontaneous responses
+
+SCORING GUIDANCE:
+- Start with neutral baseline scores (20-30) when conversation begins
+- Adjust UP when detecting scam/deepfake indicators
+- Adjust DOWN when detecting legitimate conversation indicators
+- A legitimate call should trend toward 0-30 range
+- A suspicious call should trend toward 70-100 range
+- Provide honest, dynamic assessments that reflect the actual conversation quality
+
+Each call should include all four method scores with current reasoning based on the ENTIRE conversation so far.`;
         
         let currentInputTranscription = "";
         let transcriptionTurnStarted = false;
@@ -219,7 +272,16 @@ Continuously evaluate and call the function with updated scores and reasons for 
                                     intelligence: { score: intelligence_score, reason: intelligence_reason },
                                     aggregateScore: aggregateScore
                                 });
-                                
+
+                                // Add data point to timeline
+                                const elapsedSeconds = Math.floor((Date.now() - sessionStartTimeRef.current) / 1000);
+                                const now = new Date();
+                                setTimelineData(prev => [...prev, {
+                                    timestamp: format(now, 'HH:mm:ss'),
+                                    riskScore: aggregateScore,
+                                    time: elapsedSeconds
+                                }]);
+
                                 if (aggregateScore >= 85) {
                                     setShowAlert(true);
                                 }
@@ -312,6 +374,7 @@ Continuously evaluate and call the function with updated scores and reasons for 
     transcript,
     showAlert,
     error,
+    timelineData,
     startDetection,
     stopDetection,
   };

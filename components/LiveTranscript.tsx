@@ -59,8 +59,29 @@ const LiveTranscript: React.FC<LiveTranscriptProps> = ({ transcript, keywordsToH
                 </div>
               ) : (
                 <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 mb-1 capitalize">{entry.timestamp} - {entry.speaker}</span>
-                    <div className="text-gray-200 leading-relaxed bg-gray-800 p-3 rounded-lg rounded-tl-none">
+                    <span className={`text-xs font-semibold mb-1 capitalize flex items-center gap-2 ${
+                      entry.speaker.toLowerCase().includes('caller') || entry.speaker.toLowerCase().includes('speaker 1')
+                        ? 'text-blue-400'
+                        : entry.speaker.toLowerCase().includes('recipient') || entry.speaker.toLowerCase().includes('speaker 2')
+                        ? 'text-green-400'
+                        : 'text-gray-500'
+                    }`}>
+                      <span className={`w-2 h-2 rounded-full ${
+                        entry.speaker.toLowerCase().includes('caller') || entry.speaker.toLowerCase().includes('speaker 1')
+                          ? 'bg-blue-400'
+                          : entry.speaker.toLowerCase().includes('recipient') || entry.speaker.toLowerCase().includes('speaker 2')
+                          ? 'bg-green-400'
+                          : 'bg-gray-500'
+                      }`}></span>
+                      {entry.timestamp} - {entry.speaker}
+                    </span>
+                    <div className={`text-gray-200 leading-relaxed p-3 rounded-lg rounded-tl-none ${
+                      entry.speaker.toLowerCase().includes('caller') || entry.speaker.toLowerCase().includes('speaker 1')
+                        ? 'bg-blue-900/20 border border-blue-800/30'
+                        : entry.speaker.toLowerCase().includes('recipient') || entry.speaker.toLowerCase().includes('speaker 2')
+                        ? 'bg-green-900/20 border border-green-800/30'
+                        : 'bg-gray-800'
+                    }`}>
                         <HighlightedText text={entry.text} keywords={keywordsToHighlight} />
                     </div>
                 </div>

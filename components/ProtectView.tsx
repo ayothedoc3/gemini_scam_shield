@@ -5,6 +5,7 @@ import RiskMeter from './RiskMeter';
 import LiveTranscript from './LiveTranscript';
 import AlertModal from './AlertModal';
 import AnalysisBreakdown from './AnalysisBreakdown';
+import RiskTimeline from './RiskTimeline';
 
 const UsageInstructions = () => (
   <div className="bg-gray-700/50 p-4 rounded-lg border border-gray-600 flex items-start gap-3 text-sm mt-4">
@@ -23,6 +24,7 @@ const ProtectView: React.FC = () => {
     transcript,
     showAlert,
     error,
+    timelineData,
     startDetection,
     stopDetection,
   } = useScamShield();
@@ -94,6 +96,9 @@ const ProtectView: React.FC = () => {
             </div>
         </div>
       </div>
+
+      {/* Risk Score Timeline */}
+      <RiskTimeline data={timelineData} isActive={isActive} />
 
       <AlertModal isOpen={showAlert} riskScore={analysis.aggregateScore} />
     </div>

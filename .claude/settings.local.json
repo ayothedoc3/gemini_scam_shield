@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(test:*)",
+      "Bash(npm install:*)",
+      "Bash(cp:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx localtunnel --port 3000)",
+      "Bash(ipconfig:*)",
+      "Bash(findstr:*)",
+      "Bash(netsh advfirewall firewall add rule name=\"Vite Dev Server\" dir=in action=allow protocol=TCP localport=3000)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

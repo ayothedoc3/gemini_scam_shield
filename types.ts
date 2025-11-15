@@ -27,3 +27,9 @@ export interface HistoryEntry extends DetailedAnalysis {
   source: 'live' | 'upload';
   sourceName: string; // e.g., "Live Session" or the file name
 }
+
+export interface TimelineDataPoint {
+  timestamp: string;
+  riskScore: number;
+  time: number;
+}
