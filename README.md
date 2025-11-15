@@ -10,6 +10,21 @@ Real-time voice scam detection powered by Google Gemini AI, purpose-built to pro
 
 CallGuard provides enterprise-grade protection for both human and AI agents against sophisticated voice scams. As AI agents increasingly handle customer support, payments, and sensitive operations, they become prime targets for voice-based social engineering attacks. CallGuard uses advanced multi-method detection to identify threats in real-time.
 
+## 📊 Pitch Deck
+
+View our interactive pitch deck to learn more about CallGuard's vision, market opportunity, and competitive advantages:
+
+**[View Pitch Deck](public/pitch-deck.html)** | [Documentation](PITCH_DECK.md)
+
+When running locally: `http://localhost:5173/pitch-deck.html`
+
+The pitch deck includes:
+- The $500K problem of AI agent vulnerability
+- 4-method detection system explanation
+- Market opportunity ($4.2B TAM)
+- Competitive advantages
+- Roadmap and funding ask
+
 ## Features
 
 ✅ **Enterprise Dashboard** - Real-time monitoring of protected agents (human & AI)
