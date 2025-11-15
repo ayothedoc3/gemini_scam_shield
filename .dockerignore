@@ -1,0 +1,46 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Environment files (secrets should be passed via Cloud Run env vars)
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist
+dist-ssr
+build
+.cache
+
+# Development files
+.git
+.gitignore
+*.md
+!README.md
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test files
+tests
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Miscellaneous
+coverage
+.nyc_output
+*.log
