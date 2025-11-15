@@ -5,6 +5,7 @@ import type { DetailedAnalysis } from '../types';
 
 interface AnalysisBreakdownProps {
   analysis: DetailedAnalysis;
+  isActive?: boolean;
 }
 
 const getRiskColor = (score: number): string => {
