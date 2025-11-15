@@ -10,7 +10,9 @@
       "Bash(findstr:*)",
       "Bash(netsh advfirewall firewall add rule name=\"Vite Dev Server\" dir=in action=allow protocol=TCP localport=3000)",
       "Bash(npm run build:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
