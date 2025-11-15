@@ -71,7 +71,7 @@ const MobileInstallBanner: React.FC = () => {
             <Smartphone className="w-6 h-6" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-sm">Install Scam Shield</h3>
+            <h3 className="font-bold text-sm">Install CallGuard</h3>
             <p className="text-xs opacity-90 mt-0.5">
               {isIOS && "Tap Share "}
               {isAndroid && deferredPrompt && "Install for instant access"}

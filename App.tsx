@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Shield, Upload, History, Bot, LayoutDashboard, Code } from 'lucide-react';
+import { Shield, Upload, History, LayoutDashboard, Code } from 'lucide-react';
 import ProtectView from './components/ProtectView';
 import UploadView from './components/UploadView';
 import HistoryView from './components/HistoryView';
@@ -9,6 +9,7 @@ import APIIntegrationView from './components/APIIntegrationView';
 import InstallPrompt from './components/InstallPrompt';
 import MobileInstallBanner from './components/MobileInstallBanner';
 import HTTPSWarning from './components/HTTPSWarning';
+import CallGuardLogo from './components/CallGuardLogo';
 
 type View = 'dashboard' | 'protect' | 'upload' | 'history' | 'api';
 
@@ -51,10 +52,10 @@ const App: React.FC = () => {
        <header className="bg-gray-800/50 backdrop-blur-sm sticky top-0 z-10 border-b border-gray-700">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Bot className="w-8 h-8 text-indigo-400" />
+            <CallGuardLogo size={40} />
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-white">
-                SCAM SHIELD
+                CALLGUARD
               </h1>
               <p className="text-xs text-gray-400 hidden sm:block">Enterprise AI Agent Protection</p>
             </div>

@@ -10,8 +10,8 @@ const APIIntegrationView: React.FC = () => {
     setTimeout(() => setCopiedSection(null), 2000);
   };
 
-  const webhookExample = `// Integrate Scam Shield into your AI agent workflow
-const response = await fetch('https://api.scamshield.ai/v1/analyze', {
+  const webhookExample = `// Integrate CallGuard into your AI agent workflow
+const response = await fetch('https://api.callguard.ai/v1/analyze', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -32,7 +32,7 @@ if (analysis.riskScore > 70) {
 }`;
 
   const webhookCallbackExample = `// Receive real-time alerts via webhook
-app.post('/webhooks/scam-shield', (req, res) => {
+app.post('/webhooks/callguard', (req, res) => {
   const { riskScore, threat, agentId, timestamp } = req.body;
 
   if (riskScore > 85) {
@@ -54,7 +54,7 @@ app.post('/webhooks/scam-shield', (req, res) => {
 # Protect your AI agent from voice scams
 def analyze_call(audio_stream, agent_id):
     response = requests.post(
-        'https://api.scamshield.ai/v1/analyze',
+        'https://api.callguard.ai/v1/analyze',
         headers={
             'Authorization': f'Bearer {API_KEY}',
             'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ def analyze_call(audio_stream, agent_id):
       <div>
         <h1 className="text-3xl font-bold text-white mb-2">API Integration</h1>
         <p className="text-gray-400">
-          Integrate Scam Shield protection directly into your AI agent infrastructure
+          Integrate CallGuard protection directly into your AI agent infrastructure
         </p>
       </div>
 
