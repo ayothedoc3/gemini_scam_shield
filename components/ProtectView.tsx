@@ -88,7 +88,7 @@ const ProtectView: React.FC = () => {
         <div className="lg:col-span-1 flex flex-col gap-6">
             <div className="bg-gray-800/50 p-6 rounded-2xl border border-gray-700">
                 <h2 className="text-2xl font-bold text-white mb-4">Threat Analysis Breakdown</h2>
-                <AnalysisBreakdown analysis={analysis} />
+                <AnalysisBreakdown analysis={analysis} isActive={isActive} />
             </div>
             <div className="bg-gray-800/50 p-6 rounded-2xl border border-gray-700 flex flex-col flex-grow">
                 <h2 className="text-2xl font-bold text-white mb-4">Live Transcript</h2>

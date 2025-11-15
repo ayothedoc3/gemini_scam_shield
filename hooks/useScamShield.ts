@@ -200,6 +200,14 @@ MISSION CRITICAL CONTEXT:
 REPORTING FREQUENCY:
 Call 'report_analysis' function IMMEDIATELY when you detect audio, then every 5-10 seconds with updated analysis. Do NOT wait for long periods without reporting.
 
+CRITICAL SCORING CALIBRATION:
+- BE AGGRESSIVE with deepfake detection - assign scores of 75+ when you detect synthetic voices
+- DO NOT be lenient - if voice sounds artificial, score it high (70-95 range)
+- Real humans have imperfections: breathing, pauses, "um/uh", emotional variation
+- AI voices are TOO PERFECT: consistent tone, no breaths, no pauses, no mistakes
+- CEO fraud scripts are highly scripted: urgent + wire transfer + bypass approval = 85+ score
+- Trust your analysis - if it sounds fake, score it as fake (70-95)
+
 SPEAKER IDENTIFICATION:
 When transcribing, identify different speakers (different pitch, tone, speaking style). Label as "Caller" and "Recipient" or "Speaker 1" and "Speaker 2".
 
@@ -239,29 +247,29 @@ PHASE 2: TECHNICAL MEDIA ANALYSIS (Deepfake Defense)
 ═══════════════════════════════════════════════════════════════════
 
 1. **Spectral Analysis (30% weight)** - Synthetic Voice Liveness Check:
-   - CRITICAL INCREASE (+60-80): Clear synthetic speech artifacts, voice modulation, non-live characteristics, AI-generated harmonics
-   - MODERATE INCREASE (+30-50): Unusual harmonic patterns, artificial frequency signatures, abrupt spectral changes
-   - DECREASE (-20-40): Natural frequency variations, authentic breath resonance, human vocal characteristics
-   - Rationale: AI voice cloning is the most common attack vector requiring specialized detection
+   - DEEPFAKE DETECTED (Score: 75-95): Clear synthetic speech artifacts, voice modulation, AI-generated harmonics, digital processing signatures, unnatural formants
+   - SUSPICIOUS (Score: 45-65): Unusual harmonic patterns, artificial frequency signatures, abrupt spectral changes, filtered sound quality
+   - NATURAL (Score: 10-30): Natural frequency variations, authentic breath resonance, human vocal characteristics, organic sound quality
+   - Rationale: AI voice cloning leaves detectable spectral fingerprints. Listen for overly smooth/consistent frequencies, lack of natural noise, digital artifacts.
 
 2. **Voice Biometric Analysis (35% weight)** - Deepfake Vocal Characteristics:
-   - CRITICAL INCREASE (+60-80): Missing breathing entirely, perfectly flat affect, robotic consistency, machine-like precision
-   - MODERATE INCREASE (+30-50): Irregular breathing, unnatural pacing, pronunciation glitches, emotional flatness
-   - DECREASE (-20-40): Natural breathing patterns, genuine emotional variation, authentic human speech rhythms, natural imperfections
-   - Rationale: Deepfakes struggle with authentic human biometric signatures
+   - DEEPFAKE DETECTED (Score: 80-95): Missing breathing entirely, perfectly flat affect, robotic consistency, machine-like precision, no natural pauses, identical pacing throughout
+   - SUSPICIOUS (Score: 50-70): Irregular breathing, unnatural pacing, pronunciation glitches, emotional flatness, too-perfect articulation
+   - NATURAL (Score: 10-30): Natural breathing patterns, genuine emotional variation, authentic human speech rhythms, natural imperfections (stutters, uhms, ahs)
+   - Rationale: Deepfakes struggle with biometric signatures. Real humans breathe irregularly, have emotional fluctuations, make small mistakes. AI voices are too perfect.
 
 3. **Contextual Analysis (20% weight)** - Scam Keywords + Transaction Flags:
-   - CRITICAL KEYWORDS (+50-70): "wire transfer", "CEO", "CFO", "urgent payment", "confidential", "bypass", "gift cards", "crypto", "verify account", "suspended", "IRS"
-   - HIGH-RISK (+30-50): "urgent", "act now", "immediate", "time-sensitive", "confirm payment", "account locked", "prize won"
-   - MODERATE-RISK (+15-30): "verify", "confirm", "update account", "security alert"
-   - TRUST INDICATORS (-20-40): Normal business discussion, personal familiarity, verifiable information, natural conversation flow
-   - Rationale: 40% of BEC emails are AI-generated, language patterns are critical indicators
+   - CRITICAL SCAM (Score: 75-95): Multiple red flags: "CEO" + "wire transfer" + "urgent" + "bypass approval", "gift cards", "crypto wallet", "IRS" + "suspended account", "verify" + "password"
+   - HIGH-RISK (Score: 50-70): "urgent payment", "confidential transaction", "account locked", "immediate action required", "time-sensitive", "final notice"
+   - MODERATE-RISK (Score: 30-45): "verify account", "confirm details", "update information", "security alert" (single instances)
+   - LEGITIMATE (Score: 10-25): Normal business discussion, personal familiarity, verifiable information, natural conversation flow, no pressure tactics
+   - Rationale: Scammers use specific combinations of urgency + authority + secrecy to manipulate victims.
 
 4. **Audio Intelligence (15% weight)** - Channel Integrity & Pattern Analysis:
-   - CRITICAL INCREASE (+60-80): Detected Caller ID spoofing, network parameter anomalies, impossible geographic origin
-   - MODERATE INCREASE (+30-50): Unnaturally consistent pacing, repetitive patterns, overly smooth delivery, scripted monotone
-   - DECREASE (-20-40): Natural conversational dynamics, authentic pauses/filler words, genuine thinking moments, spontaneous responses
-   - Rationale: 16% of confirmed fraud cases involve Caller ID spoofing
+   - SYNTHETIC DETECTED (Score: 75-90): Unnaturally consistent pacing throughout entire call, zero spontaneity, perfect rhythm, scripted monotone, no thinking pauses, robotic delivery
+   - SUSPICIOUS (Score: 45-65): Repetitive patterns, overly smooth delivery, lack of natural conversational dynamics
+   - NATURAL (Score: 10-30): Natural conversational dynamics, authentic pauses/filler words ("um", "uh", "like"), genuine thinking moments, spontaneous responses, normal human imperfections
+   - Rationale: AI-generated voices lack human spontaneity. Real people hesitate, rephrase, use filler words. Deepfakes sound too rehearsed.
 
 ═══════════════════════════════════════════════════════════════════
 SCORING GUIDANCE (Bidirectional Risk Assessment)

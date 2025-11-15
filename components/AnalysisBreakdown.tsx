@@ -21,13 +21,14 @@ const MethodIndicator: React.FC<{
   title: string;
   score: number;
   reason: string;
-}> = ({ Icon, title, score, reason }) => {
+  isActive?: boolean;
+}> = ({ Icon, title, score, reason, isActive }) => {
   const color = getRiskColor(score);
 
   return (
     <div className="flex items-start gap-4">
-      <div className={`mt-1 flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gray-700/50 ${color}`}>
-        <Icon className="w-5 h-5" />
+      <div className={`mt-1 flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gray-700/50 ${color} ${isActive ? 'animate-pulse' : ''}`}>
+        <Icon className={`w-5 h-5 ${isActive ? 'animate-pulse' : ''}`} />
       </div>
       <div className="flex-grow">
         <div className="flex justify-between items-baseline">
@@ -40,34 +41,44 @@ const MethodIndicator: React.FC<{
   );
 };
 
-const AnalysisBreakdown: React.FC<AnalysisBreakdownProps> = ({ analysis }) => {
+const AnalysisBreakdown: React.FC<AnalysisBreakdownProps> = ({ analysis, isActive }) => {
   if (!analysis) return null;
 
   return (
     <div className="space-y-4">
+      {isActive && (
+        <div className="flex items-center gap-2 text-sm text-indigo-400 mb-2">
+          <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
+          <span className="animate-pulse">Analyzing audio stream...</span>
+        </div>
+      )}
       <MethodIndicator
         Icon={Activity}
         title="Spectral Analysis"
         score={analysis.spectral.score}
         reason={analysis.spectral.reason}
+        isActive={isActive}
       />
       <MethodIndicator
         Icon={HeartPulse}
         title="Voice Biometric"
         score={analysis.biometric.score}
         reason={analysis.biometric.reason}
+        isActive={isActive}
       />
       <MethodIndicator
         Icon={FileText}
         title="Contextual Analysis"
         score={analysis.contextual.score}
         reason={analysis.contextual.reason}
+        isActive={isActive}
       />
       <MethodIndicator
         Icon={BrainCircuit}
         title="Audio Intelligence"
         score={analysis.intelligence.score}
         reason={analysis.intelligence.reason}
+        isActive={isActive}
       />
     </div>
   );

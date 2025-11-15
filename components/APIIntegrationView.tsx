@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Code, Copy, Check, Webhook, Zap, Shield, Bot } from 'lucide-react';
+import { Code, Copy, Check, Webhook, Zap, Shield, Bot, Plug } from 'lucide-react';
 
 const APIIntegrationView: React.FC = () => {
   const [copiedSection, setCopiedSection] = useState<string | null>(null);
@@ -202,6 +202,135 @@ def analyze_call(audio_stream, agent_id):
   "recommendation": "TERMINATE_CALL"
 }`}
           </pre>
+        </div>
+      </div>
+
+      {/* One-Click VoIP/CRM Integrations */}
+      <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Plug className="w-5 h-5 text-indigo-400" />
+          <h2 className="text-xl font-bold text-white">One-Click Platform Integrations</h2>
+        </div>
+        <p className="text-sm text-gray-400 mb-6">
+          Connect CallGuard to your existing VoIP and CRM infrastructure with pre-built integrations
+        </p>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Twilio */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#F22F46">
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm0 21c-5 0-9-4-9-9s4-9 9-9 9 4 9 9-4 9-9 9zm3-13.5c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-6 0c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">Twilio</h4>
+              <span className="text-xs text-green-400 font-medium">Available Now</span>
+            </div>
+          </div>
+
+          {/* RingCentral */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-orange-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#FF6600">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">RingCentral</h4>
+              <span className="text-xs text-green-400 font-medium">Available Now</span>
+            </div>
+          </div>
+
+          {/* Zoom Phone */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#2D8CFF">
+                  <path d="M3 7a1 1 0 011-1h4a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V7zm12-4a1 1 0 011-1h4a1 1 0 011 1v18a1 1 0 01-1 1h-4a1 1 0 01-1-1V3z"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">Zoom Phone</h4>
+              <span className="text-xs text-green-400 font-medium">Available Now</span>
+            </div>
+          </div>
+
+          {/* Microsoft Teams */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#5059C9">
+                  <rect x="2" y="2" width="9" height="9" rx="1"/>
+                  <rect x="13" y="2" width="9" height="9" rx="1"/>
+                  <rect x="2" y="13" width="9" height="9" rx="1"/>
+                  <rect x="13" y="13" width="9" height="9" rx="1"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">MS Teams</h4>
+              <span className="text-xs text-yellow-400 font-medium">Coming Soon</span>
+            </div>
+          </div>
+
+          {/* Salesforce */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-cyan-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#00A1E0">
+                  <path d="M10.5 3C6.4 3 3 6.4 3 10.5c0 1.8.6 3.4 1.7 4.7l-.9 3.4 3.5-.9c1.3 1 2.9 1.6 4.7 1.6 4.1 0 7.5-3.4 7.5-7.5S14.6 3 10.5 3z"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">Salesforce</h4>
+              <span className="text-xs text-green-400 font-medium">Available Now</span>
+            </div>
+          </div>
+
+          {/* HubSpot */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-orange-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#FF7A59">
+                  <circle cx="18" cy="6" r="3"/>
+                  <circle cx="6" cy="18" r="3"/>
+                  <path d="M12 9L12 15M9 12L15 12" stroke="#FF7A59" strokeWidth="2"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">HubSpot</h4>
+              <span className="text-xs text-green-400 font-medium">Available Now</span>
+            </div>
+          </div>
+
+          {/* Genesys Cloud */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#A020F0">
+                  <path d="M12 2L2 7v10c0 5.5 3.8 10.7 10 12 6.2-1.3 10-6.5 10-12V7l-10-5z"/>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">Genesys</h4>
+              <span className="text-xs text-yellow-400 font-medium">Coming Soon</span>
+            </div>
+          </div>
+
+          {/* Five9 */}
+          <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500/50 transition-colors cursor-pointer group">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-500/30 transition-colors">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="#00B140">
+                  <text x="4" y="18" fontSize="16" fontWeight="bold">5</text>
+                  <text x="12" y="18" fontSize="16" fontWeight="bold">9</text>
+                </svg>
+              </div>
+              <h4 className="font-semibold text-white text-sm mb-1">Five9</h4>
+              <span className="text-xs text-yellow-400 font-medium">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 bg-indigo-900/20 border border-indigo-500/30 rounded-lg p-4">
+          <p className="text-sm text-indigo-200">
+            <strong>Enterprise Integration Support:</strong> Need a custom integration for your platform? Our team can build custom connectors for your specific infrastructure. Contact sales for details.
+          </p>
         </div>
       </div>
 
