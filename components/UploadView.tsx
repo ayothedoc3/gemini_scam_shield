@@ -35,7 +35,15 @@ const UploadView: React.FC = () => {
     setError(null);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+
+      if (!apiKey) {
+        setError('API key is not configured. Please set GEMINI_API_KEY in environment variables.');
+        setIsAnalyzing(false);
+        return;
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
       const audioData = await file.arrayBuffer();
       const base64Audio = arrayBufferToBase64(audioData);
       

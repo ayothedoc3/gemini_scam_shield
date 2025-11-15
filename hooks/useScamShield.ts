@@ -187,7 +187,16 @@ const useScamShield = () => {
     }
 
     try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+
+        if (!apiKey) {
+            setError('API key is not configured. Please set GEMINI_API_KEY in environment variables.');
+            setIsStarting(false);
+            return;
+        }
+
+        console.log('Initializing Gemini with API key:', apiKey.substring(0, 10) + '...');
+        const ai = new GoogleGenAI({ apiKey });
         
         const systemInstruction = `You are CallGuard - an enterprise-grade AI protection system specialized in detecting Vishing 2.0 / Deepfake CEO Fraud and voice-based social engineering attacks targeting AI agents and human employees. You function as a Zero-Trust Transaction Validator, prioritizing technical and procedural adherence over perceived authority or familiarity.
 
@@ -431,11 +440,15 @@ Each call should include all four method scores with reasoning based on the ENTI
                 },
                 onerror: (e: ErrorEvent) => {
                   console.error('Live session error:', e);
-                  setError('An error occurred with the analysis service. Please try again.');
+                  console.error('Error details:', JSON.stringify(e));
+                  setError(`Analysis service error: ${e.message || 'Connection failed'}. Check API key and try again.`);
                   stopDetection();
                 },
                 onclose: (e: CloseEvent) => {
-                  console.log('Live session closed.');
+                  console.log('Live session closed. Code:', e.code, 'Reason:', e.reason);
+                  if (e.code === 1006) {
+                    console.error('WebSocket closed abnormally - possible API key or network issue');
+                  }
                   if (isActive) {
                     stopDetection();
                   }
@@ -448,9 +461,10 @@ Each call should include all four method scores with reasoning based on the ENTI
                 systemInstruction: systemInstruction,
             }
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error('Failed to start Gemini session:', err);
-        setError('Failed to initialize the analysis service.');
+        console.error('Error stack:', err.stack);
+        setError(`Failed to initialize: ${err.message || 'Unknown error'}. Check console for details.`);
         setIsStarting(false);
     }
   }, [stopDetection, isActive]);
