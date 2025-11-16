@@ -1,5 +1,7 @@
 <div align="center">
-<img width="1200" height="475" alt="CallGuard Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="448" height="453" alt="CallGuard - Critical Alert Demo" src="https://github.com/user-attachments/assets/YOUR_IMAGE_URL_HERE" />
+
+**High Probability of AI Voice Detected - 89% Risk Score**
 </div>
 
 # CallGuard - Enterprise AI Agent Protection
