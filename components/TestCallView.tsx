@@ -10,6 +10,7 @@ const TestCallView: React.FC = () => {
   const [isCallActive, setIsCallActive] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [testScenario, setTestScenario] = useState<'ceo-fraud' | 'tech-support' | 'irs' | 'legitimate'>('ceo-fraud');
+  const [manualMode, setManualMode] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceNodeRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
@@ -64,8 +65,10 @@ const TestCallView: React.FC = () => {
       // Start CallGuard detection
       await startDetection();
 
-      // Simulate the scam scenario audio
-      simulateScamCall();
+      // Simulate the scam scenario audio (only if not in manual mode)
+      if (!manualMode) {
+        simulateScamCall();
+      }
     } catch (err) {
       console.error('Error starting test call:', err);
       alert('Could not access microphone. Please grant permission.');
@@ -85,7 +88,10 @@ const TestCallView: React.FC = () => {
       utterance.voice = voices[0]; // Use first available voice
     }
 
-    window.speechSynthesis.speak(utterance);
+    // Add a small delay to ensure CallGuard is listening
+    setTimeout(() => {
+      window.speechSynthesis.speak(utterance);
+    }, 1000);
   };
 
   const endTestCall = () => {
@@ -139,6 +145,41 @@ const TestCallView: React.FC = () => {
         <div className="bg-red-500/20 dark:bg-red-500/10 border border-red-500 text-red-700 dark:text-red-300 p-4 rounded-xl">
           <p className="font-bold">Error:</p>
           <p className="text-sm">{error}</p>
+        </div>
+      )}
+
+      {/* Audio Setup Warning Banner */}
+      {!isCallActive && (
+        <div className="bg-gradient-to-r from-yellow-500/20 to-amber-500/20 dark:from-yellow-500/10 dark:to-amber-500/10 border-2 border-yellow-500/50 dark:border-yellow-500/30 rounded-2xl p-5 shadow-lg">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-yellow-500/30 rounded-xl">
+              <Volume2 className="w-6 h-6 text-yellow-700 dark:text-yellow-400" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-black text-yellow-900 dark:text-yellow-300 mb-2">
+                🔊 Important: Audio Setup Required
+              </h3>
+              <p className="text-sm text-yellow-800 dark:text-yellow-400 mb-3 leading-relaxed">
+                For automatic testing, the text-to-speech audio must play through your <strong>speakers</strong> at <strong>medium-high volume</strong> so your microphone can pick it up.
+                Headphones may not work well for this test.
+              </p>
+              <div className="flex flex-wrap gap-3 items-center">
+                <button
+                  onClick={() => setManualMode(!manualMode)}
+                  className={`px-4 py-2 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-105 ${
+                    manualMode
+                      ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/50'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600'
+                  }`}
+                >
+                  {manualMode ? '✓ Manual Mode Active' : 'Switch to Manual Mode'}
+                </button>
+                <span className="text-xs text-yellow-700 dark:text-yellow-400">
+                  {manualMode ? 'You\'ll read the script yourself' : 'Or read the script yourself for accurate testing'}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -250,6 +291,31 @@ const TestCallView: React.FC = () => {
             </div>
           </div>
 
+          {/* Manual Mode Script Display */}
+          {isCallActive && manualMode && (
+            <div className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 dark:from-indigo-900/30 dark:to-purple-900/30 border-2 border-indigo-400 dark:border-indigo-500/50 rounded-2xl p-6 shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-indigo-500/30 rounded-lg">
+                  <Mic className="w-5 h-5 text-indigo-700 dark:text-indigo-300" />
+                </div>
+                <h3 className="text-lg font-black text-indigo-900 dark:text-indigo-200">
+                  📖 Read This Script Out Loud
+                </h3>
+              </div>
+              <div className="bg-white/70 dark:bg-gray-900/50 rounded-xl p-5 border-2 border-dashed border-indigo-300 dark:border-indigo-600">
+                <p className="text-sm font-semibold text-indigo-800 dark:text-indigo-300 mb-3">
+                  Scenario: {testScenarios[testScenario].name}
+                </p>
+                <p className="text-base leading-relaxed text-gray-800 dark:text-gray-200 font-medium">
+                  "{testScenarios[testScenario].script}"
+                </p>
+              </div>
+              <p className="text-xs text-indigo-700 dark:text-indigo-400 mt-3 text-center">
+                Speak clearly into your microphone. CallGuard is listening and analyzing...
+              </p>
+            </div>
+          )}
+
           {/* Risk Meter */}
           <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl p-6">
             <RiskMeter score={analysis.aggregateScore} isActive={isActive} />
@@ -296,21 +362,25 @@ const TestCallView: React.FC = () => {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-indigo-600 dark:text-indigo-400 font-bold">2.</span>
-                      <span>Click "Start Test Call" to begin the simulation</span>
+                      <span>Choose Automatic Mode (text-to-speech) or Manual Mode (read yourself)</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-indigo-600 dark:text-indigo-400 font-bold">3.</span>
-                      <span>Watch CallGuard detect and analyze the scam in real-time</span>
+                      <span>Click "Start Test Call" to begin the simulation</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-indigo-600 dark:text-indigo-400 font-bold">4.</span>
-                      <span>See risk scores, transcript, and threat analysis</span>
+                      <span>Watch CallGuard detect and analyze the scam in real-time</span>
                     </li>
                   </ul>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-4 p-3 bg-white/50 dark:bg-gray-900/30 rounded-lg">
-                    <strong>Note:</strong> This uses text-to-speech to simulate the scam call.
-                    For realistic testing, use the Upload feature with actual recorded scam calls.
-                  </p>
+                  <div className="mt-4 space-y-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 p-3 bg-white/50 dark:bg-gray-900/30 rounded-lg">
+                      <strong>Automatic Mode:</strong> Uses text-to-speech. Ensure your speakers are on and volume is medium-high so your microphone can pick up the audio.
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 p-3 bg-white/50 dark:bg-gray-900/30 rounded-lg">
+                      <strong>Manual Mode (Recommended):</strong> Read the script yourself for the most accurate detection testing.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
