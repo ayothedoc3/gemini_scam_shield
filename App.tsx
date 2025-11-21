@@ -1,18 +1,19 @@
 
 import React, { useState } from 'react';
-import { Shield, Upload, History, LayoutDashboard, Code, Sun, Moon } from 'lucide-react';
+import { Shield, Upload, History, LayoutDashboard, Code, Sun, Moon, PhoneCall } from 'lucide-react';
 import ProtectView from './components/ProtectView';
 import UploadView from './components/UploadView';
 import HistoryView from './components/HistoryView';
 import DashboardView from './components/DashboardView';
 import APIIntegrationView from './components/APIIntegrationView';
+import TestCallView from './components/TestCallView';
 import InstallPrompt from './components/InstallPrompt';
 import MobileInstallBanner from './components/MobileInstallBanner';
 import HTTPSWarning from './components/HTTPSWarning';
 import CallGuardLogo from './components/CallGuardLogo';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
-type View = 'dashboard' | 'protect' | 'upload' | 'history' | 'api';
+type View = 'dashboard' | 'protect' | 'upload' | 'history' | 'api' | 'testcall';
 
 const AppContent: React.FC = () => {
   const [activeView, setActiveView] = useState<View>('dashboard');
@@ -24,6 +25,8 @@ const AppContent: React.FC = () => {
         return <DashboardView />;
       case 'protect':
         return <ProtectView />;
+      case 'testcall':
+        return <TestCallView />;
       case 'upload':
         return <UploadView />;
       case 'history':
@@ -112,9 +115,10 @@ const AppContent: React.FC = () => {
 
       <footer className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl sticky bottom-0 z-50 border-t border-gray-200 dark:border-gray-800 shadow-2xl shadow-gray-200/50 dark:shadow-gray-950/50">
         <nav className="container mx-auto p-2 sm:p-3">
-          <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm p-1.5 rounded-2xl flex items-center justify-around gap-1.5 shadow-lg">
+          <div className="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm p-1.5 rounded-2xl flex items-center justify-around gap-1.5 shadow-lg overflow-x-auto">
             <NavItem view="dashboard" icon={LayoutDashboard} label="Dashboard" />
             <NavItem view="protect" icon={Shield} label="Protect" />
+            <NavItem view="testcall" icon={PhoneCall} label="Test Call" />
             <NavItem view="api" icon={Code} label="API" />
             <NavItem view="upload" icon={Upload} label="Upload" />
             <NavItem view="history" icon={History} label="History" />
